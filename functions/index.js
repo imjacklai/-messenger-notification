@@ -12,10 +12,18 @@ exports.sendMessageNotification = functions.database.ref('/messages/{messageId}'
     admin.database().ref('users/' + message.toId).once('value', function(snapshot) {
       const toUser = snapshot.val();
 
+      var text = ''
+
+      if (message.imageUrl == undefined) {
+        text = message.text
+      } else {
+        text = '對方傳送一張圖片'
+      }
+
       const payload = {
         notification: {
           title: fromUser.name,
-          body: message.text,
+          body: text,
           sound: 'default'
         },
         data: {
